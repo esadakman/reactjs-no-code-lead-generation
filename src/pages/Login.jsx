@@ -1,16 +1,29 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuthUser } from "../features/authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const authUser = useSelector((state) => state.auth.authUser);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(handleEmailBlur);
+
+    if (email === "solarvis@gmail.com" && password === "solarvis123") {
+      dispatch(setAuthUser(true));
+      // navigate("/admin");
+      console.log(authUser)
+    } else {
+      alert("Invalid email or password");
+    }
+
     setEmail("");
     setPassword("");
   };
@@ -39,7 +52,7 @@ const Login = () => {
 
   return (
     <>
-      <section className="bg-gray-50 ">
+      <section className=" ">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0 min-h-[91vh] ">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-900 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:px-8">
@@ -48,11 +61,6 @@ const Login = () => {
               </h1>
               <form
                 className="space-y-4 md:space-y-6"
-                // className={
-                //   emailError
-                //     ? "space-y-2 md:space-y-6"
-                //     : "space-y-4 md:space-y-6 "
-                // }
                 action="#"
                 onSubmit={handleSubmit}
               >

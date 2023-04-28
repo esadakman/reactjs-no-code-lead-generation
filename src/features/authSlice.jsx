@@ -1,28 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-//? createSlice, Redux state lojiğini kisa yoldan tanimlamak icin kullanilan bir metotdur.
-//? slice : ismi, state'lerin baslangic degerleri ve reducer'lari key-value yapisi seklinde tanimlar.
-//? reducer, state'i degistiren fonksiyonlarin yaninda otomatik olarak action type'larin tanimlanmasini da saglar.
-// const url = "http://127.0.0.1:8000/";
+const userStorage = JSON.parse(localStorage.getItem("userInfo"));
 
 const initialState = {
-  user: false,
+  authUser: userStorage ? userStorage : false,
+  isLoading: false,
+  message: "",
 };
 
 const authSlice = createSlice({
   name: "auth",
-  // initialState: initialState,
   initialState,
   reducers: {
-    setUser: (state, action) => {
-      state.user = action.payload;
+    setAuthUser: (state, action) => {
+      localStorage.setItem("userInfo", JSON.stringify(action.payload));
+      state.authUser = action.payload;
     },
-    clearUser: (state) => {
-      state.user = "";
+    clearAuthUser: (state) => {
+      state.authUser = false;
     },
   },
 });
 
-export const {setUser,clearUser} = authSlice.actions;
+export const { setAuthUser, clearAuthUser } = authSlice.actions;
 
 export default authSlice.reducer;

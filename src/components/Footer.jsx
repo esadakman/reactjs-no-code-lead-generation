@@ -2,9 +2,9 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="flex justify-between items-center h-16 px-2 sm:px-5 dark:bg-main text-black no-underline  absolute bottom-0 w-screen" >
-      <div className="text-xs sm:text-sm text-white font-medium ">
-        <p className="">
+    <footer className="flex justify-between items-center h-10 px-2 sm:px-4 text-white no-underline  absolute bottom-0 w-screen bg-slate-600 shadow-2xl" >
+      <div className="text-xs sm:text-sm  font-medium ">
+        <p className="text-sm">
           Copyright &#169;
           {new Date().getFullYear()} Esad Akman
         </p>
