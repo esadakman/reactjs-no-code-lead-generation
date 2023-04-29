@@ -12,14 +12,13 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const authUser = useSelector((state) => state.auth.authUser);
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (email === "solarvis@gmail.com" && password === "solarvis123") {
       dispatch(setAuthUser(true));
-      // navigate("/admin");
-      console.log(authUser)
+      navigate("/admin");
+      console.log(authUser);
     } else {
       alert("Invalid email or password");
     }
@@ -52,15 +51,15 @@ const Login = () => {
 
   return (
     <>
-      <section className=" ">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0 min-h-[91vh] ">
-          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-900 dark:border-gray-700">
-            <div className="p-6 space-y-4 md:space-y-6 sm:px-8">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white text-center ">
+      <section className="bg-white dark:bg-gray-900">
+        <div className="flex justify-center min-h-[91vh]">
+          <div className="flex items-center w-full max-w-xl p-8 mx-auto xl:px-12 md:w-3/5">
+            <div className="w-full">
+              <h1 className="text-2xl font-semibold tracking-wider leading-tight text-gray-900 md:text-2xl dark:text-white text-center">
                 Login
               </h1>
               <form
-                className="space-y-4 md:space-y-6"
+                className="space-y-6 md:space-y-6"
                 action="#"
                 onSubmit={handleSubmit}
               >
@@ -135,6 +134,13 @@ const Login = () => {
               </form>
             </div>
           </div>
+          <div
+            className="hidden bg-cover sm:block lg:w-3/5 md:w-2/5"
+            style={{
+              backgroundImage:
+                "url('https://images.unsplash.com/photo-1494621930069-4fd4b2e24a11?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=715&q=80')",
+            }}
+          ></div>
         </div>
       </section>
     </>

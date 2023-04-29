@@ -24,7 +24,7 @@
     @apply py-1  px-2 rounded text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-300 cursor-pointer
   }  
   .footer-icons {
-    @apply transition-all no-underline text-white  hover:text-sky-500 hover:scale-125 text-2xl;
+    @apply transition-all no-underline text-white  hover:text-sky-500 hover:scale-125 text-xl;
   }
   .btn-custom {
     @apply bg-main border-solid border-2 border-sky-500 rounded-md font-medium transition-all duration-500 text-white text-lg hover:opacity-100 hover:bg-sky-500 hover:border-main active:opacity-100 py-2 px-3 ;
