@@ -2,30 +2,32 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setConfig } from "../features/configSlice";
+import { toastSuccess } from "../helpers/customToastify";
 
 function Admin() {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.authUser);
-  const history = useNavigate();
+  const navigate = useNavigate();
   const config = useSelector((state) => state.config);
 
-  const [formConfig, setFormConfig] = useState(config.formConfig);
+  const [inputConfig, setInputConfig] = useState(config.inputConfig);
   const [outputConfig, setOutputConfig] = useState(config.outputConfig);
   const [inputPages, setInputPages] = useState(config.inputPages);
   const [outputPages, setOutputPages] = useState(config.outputPages);
   const [contactPage, setContactPage] = useState(config.contactPage);
-
+  const [contactPageInputsState, setContactPageInputsState] = useState(
+    config.contactPageInputs
+  );
   const deepCopy = (obj) => JSON.parse(JSON.stringify(obj));
 
   const handleInputChange = (e, pageIndex, inputIndex, field) => {
-    const updatedFormConfig = deepCopy(formConfig);
+    const updatedFormConfig = deepCopy(inputConfig);
     if (inputIndex !== null) {
       updatedFormConfig[pageIndex].inputVariables[inputIndex][field] =
         e.target.value;
     } else {
       updatedFormConfig[pageIndex][field] = e.target.value;
     }
-    setFormConfig(updatedFormConfig);
+    setInputConfig(updatedFormConfig);
   };
 
   const handleOutputChange = (e, pageIndex, outputIndex, field) => {
@@ -41,34 +43,25 @@ function Admin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Save the form configuration
-    // You can dispatch an action here to save the configuration in Redux or send it to an API
+
     dispatch(
       setConfig({
         inputPages,
+        inputConfig,
         outputPages,
-        contactPage,
-        formConfig,
         outputConfig,
+        contactPage,
+        contactPageInputs: contactPageInputsState,
       })
     );
-    console.log(
-      "Form Configuration:",
-      {
-        inputPages,
-        outputPages,
-        contactPage,
-        formConfig,
-        outputConfig,
-      },
-      config
-    );
+    // navigate("/");
+    toastSuccess("Your generation tool is configured successfully!");
   };
+  // console.log(config)
 
   useEffect(() => {
-    const currentInputPages = formConfig.length;
+    const currentInputPages = inputConfig.length;
     if (inputPages > currentInputPages) {
-      // Add new input pages
       const newInputPages = Array.from(
         { length: inputPages - currentInputPages },
         () => ({
@@ -85,16 +78,15 @@ function Admin() {
           imageUrl: "",
         })
       );
-      setFormConfig([...formConfig, ...newInputPages]);
+      setInputConfig([...inputConfig, ...newInputPages]);
     } else if (inputPages < currentInputPages) {
-      // Remove the last input page(s)
-      setFormConfig(formConfig.slice(0, inputPages));
+      setInputConfig(inputConfig.slice(0, inputPages));
     }
   }, [inputPages]);
+
   useEffect(() => {
     const currentOutputPages = outputConfig.length;
     if (outputPages > currentOutputPages) {
-      // Add new output pages
       const newOutputPages = Array.from(
         { length: outputPages - currentOutputPages },
         () => ({
@@ -107,20 +99,16 @@ function Admin() {
               unit: "",
             },
           ],
+          imageUrl: "", // Add this line
         })
       );
       setOutputConfig([...outputConfig, ...newOutputPages]);
     } else if (outputPages < currentOutputPages) {
-      // Remove the last output page(s)
       setOutputConfig(outputConfig.slice(0, outputPages));
     }
   }, [outputPages]);
-  // Redirect to login page if not authenticated
-  if (!isAuthenticated) {
-    history.push("/login");
-    return null;
-  }
 
+  // {/* Rest of the code */}
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">Admin</h1>
@@ -134,12 +122,12 @@ function Admin() {
             <label className="mr-2">Number of Input Pages:</label>
             <input
               type="number"
-              value={inputPages}
+              value={inputPages || ""}
               onChange={(e) => setInputPages(parseInt(e.target.value))}
               className="px-2 py-1 border border-gray-300 rounded"
             />
           </div>
-          {formConfig.map((page, pageIndex) => (
+          {inputConfig.map((page, pageIndex) => (
             <div key={`input-page-${pageIndex}`} className="mb-4">
               <h3 className="text-lg font-bold mb-2">
                 Input Page {pageIndex + 1}
@@ -148,7 +136,7 @@ function Admin() {
                 <label className="block mb-1">Title:</label>
                 <input
                   type="text"
-                  value={page.title}
+                  value={page.title || ""}
                   onChange={(e) =>
                     handleInputChange(e, pageIndex, null, "title")
                   }
@@ -159,9 +147,20 @@ function Admin() {
                 <label className="block mb-1">Description:</label>
                 <input
                   type="text"
-                  value={page.description}
+                  value={page.description || ""}
                   onChange={(e) =>
                     handleInputChange(e, pageIndex, null, "description")
+                  }
+                  className="px-2 py-1 border border-gray-300 rounded w-full"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block mb-1">Image URL:</label>
+                <input
+                  type="text"
+                  value={page.imageUrl || ""}
+                  onChange={(e) =>
+                    handleInputChange(e, pageIndex, null, "imageUrl")
                   }
                   className="px-2 py-1 border border-gray-300 rounded w-full"
                 />
@@ -178,7 +177,7 @@ function Admin() {
                     <label className="block mb-1">Input Variable Name:</label>
                     <input
                       type="text"
-                      value={input.name}
+                      value={input.name || ""}
                       onChange={(e) =>
                         handleInputChange(e, pageIndex, inputIndex, "name")
                       }
@@ -189,7 +188,7 @@ function Admin() {
                     </label>
                     <input
                       type="text"
-                      value={input.placeholder}
+                      value={input.placeholder || ""}
                       onChange={(e) =>
                         handleInputChange(
                           e,
@@ -202,7 +201,7 @@ function Admin() {
                     />
                     <label className="block mb-1">Input Variable Type:</label>
                     <select
-                      value={input.type}
+                      value={input.type || ""}
                       onChange={(e) =>
                         handleInputChange(e, pageIndex, inputIndex, "type")
                       }
@@ -214,7 +213,7 @@ function Admin() {
                     </select>
                     <label className="block mb-1">Component Type:</label>
                     <select
-                      value={input.component}
+                      value={input.component || ""}
                       onChange={(e) =>
                         handleInputChange(e, pageIndex, inputIndex, "component")
                       }
@@ -239,7 +238,7 @@ function Admin() {
             <label className="mr-2">Number of Output Pages:</label>
             <input
               type="number"
-              value={outputPages}
+              value={outputPages || ""}
               onChange={(e) => setOutputPages(parseInt(e.target.value))}
               className="px-2 py-1 border border-gray-300 rounded"
             />
@@ -253,7 +252,7 @@ function Admin() {
                 <label className="block mb-1">Title:</label>
                 <input
                   type="text"
-                  value={page.title}
+                  value={page.title || ""}
                   onChange={(e) =>
                     handleOutputChange(e, pageIndex, null, "title")
                   }
@@ -264,9 +263,20 @@ function Admin() {
                 <label className="block mb-1">Description:</label>
                 <input
                   type="text"
-                  value={page.description}
+                  value={page.description || ""}
                   onChange={(e) =>
                     handleOutputChange(e, pageIndex, null, "description")
+                  }
+                  className="px-2 py-1 border border-gray-300 rounded w-full"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block mb-1">Image URL:</label>
+                <input
+                  type="text"
+                  value={page.imageUrl || ""}
+                  onChange={(e) =>
+                    handleOutputChange(e, pageIndex, null, "imageUrl")
                   }
                   className="px-2 py-1 border border-gray-300 rounded w-full"
                 />
@@ -283,7 +293,7 @@ function Admin() {
                     <label className="block mb-1">Output Name:</label>
                     <input
                       type="text"
-                      value={output.name}
+                      value={output.name || ""}
                       onChange={(e) =>
                         handleOutputChange(e, pageIndex, outputIndex, "name")
                       }
@@ -292,7 +302,7 @@ function Admin() {
                     <label className="block mb-1">Output Value:</label>
                     <input
                       type="text"
-                      value={output.value}
+                      value={output.value || ""}
                       onChange={(e) =>
                         handleOutputChange(e, pageIndex, outputIndex, "value")
                       }
@@ -301,7 +311,7 @@ function Admin() {
                     <label className="block mb-1">Output Unit:</label>
                     <input
                       type="text"
-                      value={output.unit}
+                      value={output.unit || ""}
                       onChange={(e) =>
                         handleOutputChange(e, pageIndex, outputIndex, "unit")
                       }
@@ -334,47 +344,33 @@ function Admin() {
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  "Name",
-                  "Surname",
-                  "Phone",
-                  "E-mail",
-                  "Company Name",
-                  "Address",
+                  "name",
+                  "surname",
+                  "phone",
+                  "email",
+                  "companyName",
+                  "address",
                 ].map((input) => (
                   <div key={input} className="flex items-center">
                     <input
                       type="checkbox"
-                      checked={true} // Replace with actual value or state variable
-                      onChange={(e) => {}}
+                      checked={contactPageInputsState[input]}
+                      onChange={(e) =>
+                        setContactPageInputsState({
+                          ...contactPageInputsState,
+                          [input]: e.target.checked,
+                        })
+                      }
                       className="mr-2"
                     />
-                    <label>{input}</label>
+                    <label>
+                      {input.charAt(0).toUpperCase() + input.slice(1)}
+                    </label>
                   </div>
                 ))}
               </div>
             </div>
           )}
-        </fieldset>
-
-        {/* Image URL */}
-        <fieldset className="border rounded p-4">
-          <legend className="text-lg font-bold mb-2">Image URLs</legend>
-          {formConfig.map((page, pageIndex) => (
-            <div key={`image-url-${pageIndex}`} className="mb-4">
-              <h3 className="text-lg font-bold mb-2">
-                Image URL for Page {pageIndex + 1}
-              </h3>
-              <label className="block mb-2">Image URL:</label>
-              <input
-                type="text"
-                value={page.imageUrl}
-                onChange={(e) =>
-                  handleInputChange(e, pageIndex, null, "imageUrl")
-                }
-                className="px-2 py-1 border border-gray-300 rounded w-full"
-              />
-            </div>
-          ))}
         </fieldset>
 
         {/* Submit Button */}

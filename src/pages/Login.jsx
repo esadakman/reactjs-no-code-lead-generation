@@ -2,26 +2,20 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuthUser } from "../features/authSlice";
+import { login } from "../features/authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const authUser = useSelector((state) => state.auth.authUser);
+  // const authUser = useSelector((state) => state.auth.authUser);
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (email === "solarvis@gmail.com" && password === "solarvis123") {
-      dispatch(setAuthUser(true));
-      navigate("/admin");
-      console.log(authUser);
-    } else {
-      alert("Invalid email or password");
-    }
+    dispatch(login({ email, password, navigate }));
 
     setEmail("");
     setPassword("");

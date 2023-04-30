@@ -1,28 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toastError, toastSuccess } from "../helpers/customToastify";
 
 const userStorage = JSON.parse(localStorage.getItem("userInfo"));
 
 const initialState = {
   authUser: userStorage ? userStorage : false,
-  isLoading: false,
-  message: "",
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setAuthUser: (state, action) => {
-      localStorage.setItem("userInfo", JSON.stringify(action.payload));
-      state.authUser = action.payload;
+    login: (state, action) => {
+      const { email, password, navigate } = action.payload;
+      if (email === "solarvis@gmail.com" && password === "solarvis123") {
+        localStorage.setItem("userInfo", JSON.stringify(true));
+        state.authUser = true;
+        toastSuccess("Login successful!");
+        navigate("/"); // Navigate the user to the desired page
+      } else {
+        state.authUser = false;
+        toastError("Invalid email or password");
+      }
     },
     clearAuthUser: (state) => {
-      localStorage.removeItem("userInfo"); // Add this line to clear local storage
+      localStorage.removeItem("userInfo");
       state.authUser = false;
     },
   },
 });
 
-export const { setAuthUser, clearAuthUser } = authSlice.actions;
+export const { login, clearAuthUser } = authSlice.actions;
 
 export default authSlice.reducer;

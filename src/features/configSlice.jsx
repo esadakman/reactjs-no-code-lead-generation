@@ -1,8 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   inputPages: 0,
-  formConfig: [],
+  inputConfig: [],
   outputPages: 0,
   outputConfig: [],
   contactPage: false,
@@ -14,17 +14,17 @@ const initialState = {
     companyName: true,
     address: true,
   },
-};
+}; 
 
 const configSlice = createSlice({
-  name: 'config',
+  name: "config",
   initialState,
   reducers: {
     setInputPages: (state, action) => {
       state.inputPages = action.payload;
     },
-    setFormConfig: (state, action) => {
-      state.formConfig = action.payload;
+    setInputConfig: (state, action) => {
+      state.inputConfig = action.payload;
     },
     setOutputPages: (state, action) => {
       state.outputPages = action.payload;
@@ -38,13 +38,8 @@ const configSlice = createSlice({
     setContactPageInputs: (state, action) => {
       state.contactPageInputs = action.payload;
     },
-    // Add any other necessary reducers
     setConfig: (state, action) => {
-      state.inputPages = action.payload.inputPages;
-      state.formConfig = action.payload.formConfig;
-      state.outputPages = action.payload.outputPages;
-      state.outputConfig = action.payload.outputConfig;
-      state.contactPage = action.payload.contactPage;
+      Object.assign(state, action.payload);
     },
   },
 });
@@ -52,7 +47,7 @@ const configSlice = createSlice({
 // Export the new setConfig action
 export const {
   setInputPages,
-  setFormConfig,
+  setInputConfig,
   setOutputPages,
   setOutputConfig,
   setContactPage,
@@ -61,3 +56,67 @@ export const {
 } = configSlice.actions;
 
 export default configSlice.reducer;
+
+
+// const initialState = {
+//   inputPages: 2,
+//   inputConfig: [
+//     {
+//       title: "1.page",
+//       description: "Description 1",
+//       inputVariables: [
+//         {
+//           name: "AAA",
+//           placeholder: "Enter AAA",
+//           type: "text",
+//           component: "input",
+//         },
+//       ],
+//       imageUrl: "https://source.unsplash.com/user/erondu/1600x900",
+//     },
+//     {
+//       title: "2.page",
+//       description: "Description 2",
+//       inputVariables: [
+//         {
+//           name: "BBB",
+//           placeholder: "Enter BBB",
+//           type: "text",
+//           component: "input",
+//         },
+//         {
+//           name: "CCC",
+//           placeholder: "Select CCC",
+//           type: "select",
+//           component: "select",
+//         },
+//       ],
+//       imageUrl:
+//         "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+//     },
+//   ],
+//   outputPages: 1,
+//   outputConfig: [
+//     {
+//       title: "Output Page",
+//       description: "Output Description",
+//       outputVariables: [
+//         {
+//           name: "ZZZ",
+//           calculation: "2 * (AAA + 10) + BBB",
+//         },
+//         {
+//           name: "YYY",
+//           calculation: "3 * CCC + ZZZ",
+//         },
+//       ],
+//       imageUrl: "https://source.unsplash.com/user/erondu/1600x900",
+//     },
+//   ],
+//   contactPage: true,
+//   contactPageInputs: {
+//     name: true,
+//     surname: true,
+//     phone: true,
+//   },
+// };
