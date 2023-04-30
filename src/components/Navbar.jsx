@@ -15,7 +15,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const authUser = useSelector((state) => state.auth.authUser);
 
-  console.log(authUser);
+  // console.log(authUser);
 
   const dispatch = useDispatch();
   function handleLogout() {
@@ -46,6 +46,11 @@ const Navbar = () => {
                     <Link to="/">
                       <img
                         className="block h-12 w-auto lg:hidden transition-all hover:-translate-y-1 "
+                        src="https://solarvisbucket.s3.eu-central-1.amazonaws.com/media/public/logos/electraVis_logo.png"
+                        alt="logo"
+                      />
+                      <img
+                        className="hidden h-12 w-auto lg:block hover:opacity-80 transition-all"
                         src="https://solarvisbucket.s3.eu-central-1.amazonaws.com/media/public/logos/electraVis_logo.png"
                         alt="logo"
                       />
@@ -96,7 +101,7 @@ const Navbar = () => {
                     <Disclosure.Button
                       to={"/admin"}
                       className="block px-3 py-2 rounded-md text-base font-medium"
-                    > 
+                    >
                       Admin Page
                     </Disclosure.Button>
                     <Disclosure.Button

@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/authSlice';
-import adminConfigReducer from '../features/adminConfigSlice';
+import adminConfigReducer from '../features/configSlice';
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    adminConfig: adminConfigReducer,
+    config: adminConfigReducer,
   },
   // devTools: process.env.NODE_ENV !== 'production',
 });

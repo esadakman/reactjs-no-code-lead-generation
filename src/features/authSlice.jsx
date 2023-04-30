@@ -17,6 +17,7 @@ const authSlice = createSlice({
       state.authUser = action.payload;
     },
     clearAuthUser: (state) => {
+      localStorage.removeItem("userInfo"); // Add this line to clear local storage
       state.authUser = false;
     },
   },
