@@ -1,16 +1,18 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import LeadGenerationForm from '../components/LeadGenerationForm';
-import { setLeadGenerationSettings } from '../features/leadSettingsSlice';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate} from 'react-router-dom';
+import {
+  setInputPages,
+  setOutputPages,
+  setContactPage,
+  setContactFormInputs,
+} from '../features/adminConfigSlice';
 
 const Admin = () => {
+  const adminConfig = useSelector((state) => state.adminConfig);
   const dispatch = useDispatch();
-
-  const handleSubmit = (formData) => {
-    dispatch(setLeadGenerationSettings(formData));
-  };
-
+  const history = useNavigate();
+  console.log(adminConfig);
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="py-8">
@@ -24,7 +26,6 @@ const Admin = () => {
               <p className="mt-1 max-w-2xl text-sm text-gray-500">Configure your lead generation settings here.</p>
             </div>
             <div className="border-t border-gray-200 px-4 py-5 sm:p-0 ">
-              <LeadGenerationForm onSubmit={handleSubmit} />
             </div>
           </div>
         </div>

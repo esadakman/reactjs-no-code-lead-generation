@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { clearAuthUser } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
-import { LogoutIcon, MenuIcon } from "../helpers/svg";
+import { AdminIcon, LogoutIcon, MenuIcon } from "../helpers/svg";
 const navigation = [
   // { name: "Home", to: "/", current: true },
   // { name: "Register", to: "/register", current: false },
@@ -49,29 +49,27 @@ const Navbar = () => {
                         src="https://solarvisbucket.s3.eu-central-1.amazonaws.com/media/public/logos/electraVis_logo.png"
                         alt="logo"
                       />
-                      <img
-                        className="hidden h-12 w-auto lg:block hover:opacity-80 transition-all   "
-                        src="https://solarvisbucket.s3.eu-central-1.amazonaws.com/media/public/logos/electraVis_logo.png"
-                        alt="logo"
-                      />
                     </Link>
                   </div>
                   <div className="hidden sm:ml-6 sm:block ">
-                    <div className="flex space-x-4 ">
+                    <div className="flex  ">
                       {authUser ? (
-                        <button
-                          className="flex items-center gap-2 px-5 py-2 rounded-xl text-white bg-indigo-600 hover:bg-indigo-800 active focus:outline-none border-4 border-white transition-all"
-                          onClick={handleLogout}
-                        >
-                          <LogoutIcon />
-                          <span className="mt-1 tracking-wider">Logout</span>
-                        </button>
+                        <>
+                          <Link className="btn-navbar" to={"/admin"}>
+                            <AdminIcon />
+                            <span className="tracking-wider">Admin</span>
+                          </Link>
+                          <button className="btn-navbar" onClick={handleLogout}>
+                            <LogoutIcon />
+                            <span className="tracking-wider">Logout</span>
+                          </button>
+                        </>
                       ) : (
                         navigation.map((item) => (
                           <Link
                             key={item.name}
                             to={item.to}
-                            className="flex items-center gap-2 px-5 py-2 rounded-xl text-white bg-indigo-600 hover:bg-indigo-800 active focus:outline-none border-4 border-white transition-all "
+                            className="btn-navbar "
                             aria-current={item.current ? "page" : undefined}
                             // onClick={item.current = true}
                           >
@@ -90,18 +88,38 @@ const Navbar = () => {
 
             <Disclosure.Panel className="sm:hidden fixed bg-slate-200 w-screen">
               <div className="space-y-1 px-2 pt-2 pb-3 ">
-                {navigation.map((item) => (
-                  <Disclosure.Button
-                    key={item.name}
-                    as={Link}
-                    to={item.to}
-                    className="block px-3 py-2 rounded-md text-base font-medium"
-                    // onClick={handleLogout()}
-                    aria-current={item.current ? "page" : undefined}
-                  >
-                    {item.name}
-                  </Disclosure.Button>
-                ))}
+                {/* {navigation.map((item) => (
+                  
+                ))} */}
+                {authUser ? (
+                  <>
+                    <Disclosure.Button
+                      to={"/admin"}
+                      className="block px-3 py-2 rounded-md text-base font-medium"
+                    > 
+                      Admin Page
+                    </Disclosure.Button>
+                    <Disclosure.Button
+                      onClick={handleLogout}
+                      className="block px-3 py-2 rounded-md text-base font-medium"
+                    >
+                      Logout
+                    </Disclosure.Button>
+                  </>
+                ) : (
+                  navigation.map((item) => (
+                    <Disclosure.Button
+                      key={item.name}
+                      as={Link}
+                      to={item.to}
+                      className="block px-3 py-2 rounded-md text-base font-medium"
+                      // onClick={handleLogout()}
+                      aria-current={item.current ? "page" : undefined}
+                    >
+                      {item.name}
+                    </Disclosure.Button>
+                  ))
+                )}
               </div>
             </Disclosure.Panel>
           </>
