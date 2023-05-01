@@ -17,7 +17,7 @@ const authSlice = createSlice({
         localStorage.setItem("userInfo", JSON.stringify(true));
         state.authUser = true;
         toastSuccess("Login successful!");
-        navigate("/"); // Navigate the user to the desired page
+        navigate("/"); 
       } else {
         state.authUser = false;
         toastError("Invalid email or password");

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/authSlice";
@@ -11,12 +11,14 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const authUser = useSelector((state) => state.auth.authUser);
+  const authUser = useSelector((state) => state.auth.authUser);
   const handleSubmit = (event) => {
     event.preventDefault();
 
     dispatch(login({ email, password, navigate }));
-
+    if (authUser) {
+      navigate("/");
+    }
     setEmail("");
     setPassword("");
   };
@@ -112,19 +114,13 @@ const Login = () => {
                     </p>
                   )}
                 </div>
-                <button type="submit" className="btn-blue mt-2 mb-1 w-full">
+                <button
+                  type="submit"
+                  className="btn-blue mt-2 mb-1 w-full"
+                  disabled={!!emailError || !!passwordError}
+                >
                   Login
                 </button>
-
-                <p className="mt-2 text-sm font-medium text-gray-500">
-                  Don't have an account?{" "}
-                  <Link
-                    to="/register"
-                    className="text-blue-500 hover:text-blue-600"
-                  >
-                    Sign Up
-                  </Link>
-                </p>
               </form>
             </div>
           </div>

@@ -5,7 +5,7 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-// import Footer from "../components/Footer";
+import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -35,7 +35,7 @@ const AppRouter = () => {
           element={<PrivateRouter element={<Admin />} />}
         /> */}
       </Routes>
-      {/* <Footer /> */}
+      <Footer />
     </BrowserRouter>
   );
 };
