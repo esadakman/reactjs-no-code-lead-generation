@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useInputHandlers, useStepHandlers } from "../helpers/customHooks";
 import InputPage from "../components/formPages/InputPage";
 import ContactPage from "../components/formPages/ContactPage";
 import OutputPage from "../components/formPages/OutputPage";
 import ProgressBar from "../components/formPages/ProgressBar";
+import { setAllInputs } from "../features/configSlice";
 
 const Home = () => {
+  const dispatch = useDispatch();
   const inputConfig = useSelector((state) => state.config.inputConfig);
   const outputConfig = useSelector((state) => state.config.outputConfig);
+  const config = useSelector((state) => state.config);
+
+  
   const contactPageInputs = useSelector(
     (state) => state.config.contactPageInputs
   );
@@ -34,8 +39,9 @@ const Home = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(allInputs);
+    dispatch(setAllInputs(allInputs));
   };
+  console.log(config.allInputs);
 
   const currentPage =
     step <= inputConfig.length
@@ -108,18 +114,27 @@ const Home = () => {
               {finalStep > 1 && (
                 <div className="mt-4 flex">
                   <button
-                    className="btn-blue-two mr-2 disabled:opacity-50 disabled:pointer-events-none "
+                    className="btn-blue-two mr-2 disabled:opacity-50 disabled:pointer-events-none"
                     onClick={handleBackStep}
                     disabled={step === 1}
                   >
                     Back
                   </button>
-                  <button
-                    className="btn-blue-two"
-                    onClick={step === finalStep ? handleSubmit : handleNextStep}
-                  >
-                    {step === finalStep ? "Submit" : "Next"}
-                  </button>
+                  {step === finalStep ? (
+                    <button
+                      className="btn-blue-two"
+                      onClick={handleSubmit} 
+                    >
+                      Submit
+                    </button>
+                  ) : (
+                    <button
+                      className="btn-blue-two mr-2"
+                      onClick={handleNextStep}
+                    >
+                      Next
+                    </button>
+                  )}
                 </div>
               )}
             </div>

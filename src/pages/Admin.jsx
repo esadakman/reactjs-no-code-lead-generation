@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resetConfig, setConfig } from "../features/configSlice";
-import { toastSuccess } from "../helpers/customToastify";
+import { toastSuccess, toastWarn } from "../helpers/customToastify";
 import InputPage from "../components/adminPages/InputPage";
 import OutputPage from "../components/adminPages/OutputPage";
 
@@ -19,7 +19,7 @@ function Admin() {
   const [contactPageInputsState, setContactPageInputsState] = useState(
     config.contactPageInputs
   );
-
+  console.log(inputPages, outputPages);
   const handleInputChange = (e, pageIndex, inputIndex, field) => {
     const updatedFormConfig = [...inputConfig];
     if (inputIndex !== null) {
@@ -55,19 +55,23 @@ function Admin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      setConfig({
-        inputPages,
-        inputConfig,
-        outputPages,
-        outputConfig,
-        contactPage,
-        contactPageInputs: contactPageInputsState,
-      })
-    );
-    // console.log(config);
-    navigate("/");
-    toastSuccess("Your generation tool is configured successfully!");
+    if (inputPages === 0 || outputPages === 0) {
+      toastWarn("You must have at least one input or output page!");
+    } else {
+      dispatch(
+        setConfig({
+          inputPages,
+          inputConfig,
+          outputPages,
+          outputConfig,
+          contactPage,
+          contactPageInputs: contactPageInputsState,
+        })
+      );
+      // console.log(config);
+      navigate("/");
+      toastSuccess("Your generation tool is configured successfully!");
+    }
   };
 
   const handleReset = () => {
@@ -134,7 +138,9 @@ function Admin() {
       <h1 className="text-2xl font-bold mb-4 text-center">
         Admin Configuration Page
       </h1>
-      <p className="text-center">Please fill in the form below to configure the pages:</p>
+      <p className="text-center">
+        Please fill in the form below to configure the pages:
+      </p>
       <form onSubmit={handleSubmit} className="space-y-4 w-3/4 mx-auto">
         {/* Input Pages */}
         <fieldset className="border rounded p-4">

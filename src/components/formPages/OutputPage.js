@@ -1,6 +1,6 @@
 const OutputPage = ({ config, inputValues, allInputs }) => {
   const { title, description, outputVariables } = config;
-  console.log(allInputs)
+  // console.log(allInputs)
 
   return (
     <div>
