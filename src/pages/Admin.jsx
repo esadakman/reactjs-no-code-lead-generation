@@ -130,10 +130,12 @@ function Admin() {
     }
   }, [outputPages, outputConfig]);
   return (
-    <div className="container mx-auto px-4 pb-12">
-      <h1 className="text-2xl font-bold mb-4">Admin Configuration Page</h1>
-      <p>Please fill in the form below to configure the pages:</p>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="container mx-auto px-4 pb-12 ">
+      <h1 className="text-2xl font-bold mb-4 text-center">
+        Admin Configuration Page
+      </h1>
+      <p className="text-center">Please fill in the form below to configure the pages:</p>
+      <form onSubmit={handleSubmit} className="space-y-4 w-3/4 mx-auto">
         {/* Input Pages */}
         <fieldset className="border rounded p-4">
           <legend className="text-lg font-bold mb-2">Input Pages</legend>
@@ -230,17 +232,10 @@ function Admin() {
 
         {/* Submit and Reset Buttons */}
         <div className="flex space-x-4">
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded"
-          >
+          <button type="submit" className="btn-blue ">
             Save Configuration
           </button>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="px-4 py-2 bg-red-500 text-white rounded"
-          >
+          <button type="button" onClick={handleReset} className="btn-red">
             Reset Configuration
           </button>
         </div>
