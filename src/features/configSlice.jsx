@@ -24,6 +24,72 @@ const initialState = {
   },
 };
 
+// const initialState = {
+//   inputPages: 2,
+//   inputConfig: [
+//     {
+//       title: "1.page",
+//       description: "Description 1",
+//       inputVariables: [
+//         {
+//           name: "AAA",
+//           placeholder: "Enter AAA",
+//           type: "text",
+//           component: "input",
+//         },
+//       ],
+//       imageUrl: "https://source.unsplash.com/user/erondu/1600x900",
+//     },
+//     {
+//       title: "2.page",
+//       description: "Description 2",
+//       inputVariables: [
+//         {
+//           name: "BBB",
+//           placeholder: "Enter BBB",
+//           type: "text",
+//           component: "input",
+//         },
+//         {
+//           name: "CCC",
+//           placeholder: "Select CCC",
+//           type: "text",
+//           component: "textarea",
+//         },
+//       ],
+//       imageUrl:
+//         "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+//     },
+//   ],
+//   outputPages: 1,
+//   outputConfig: [
+//     {
+//       title: "Output Page",
+//       description: "Output Description",
+//       outputVariables: [
+//         {
+//           name: "ZZZ",
+//           calculation: "2 * (AAA + 10) + BBB",
+//         },
+//         {
+//           name: "YYY",
+//           calculation: "3 * CCC + ZZZ",
+//         },
+//       ],
+//       imageUrl: "https://source.unsplash.com/user/erondu/1600x900",
+//     },
+//   ],
+//   contactPage: true,
+//   contactPageInputs: {
+//     name: true,
+//     surname: true,
+//     phone: true,
+//     email: false,
+//     companyName: false,
+//     address: false,
+//   },
+// };
+
 const configSlice = createSlice({
   name: "config",
   initialState,
@@ -68,66 +134,3 @@ export const {
 } = configSlice.actions;
 
 export default configSlice.reducer;
-
-// const initialState = {
-//   inputPages: 2,
-//   inputConfig: [
-//     {
-//       title: "1.page",
-//       description: "Description 1",
-//       inputVariables: [
-//         {
-//           name: "AAA",
-//           placeholder: "Enter AAA",
-//           type: "text",
-//           component: "input",
-//         },
-//       ],
-//       imageUrl: "https://source.unsplash.com/user/erondu/1600x900",
-//     },
-//     {
-//       title: "2.page",
-//       description: "Description 2",
-//       inputVariables: [
-//         {
-//           name: "BBB",
-//           placeholder: "Enter BBB",
-//           type: "text",
-//           component: "input",
-//         },
-//         {
-//           name: "CCC",
-//           placeholder: "Select CCC",
-//           type: "select",
-//           component: "select",
-//         },
-//       ],
-//       imageUrl:
-//         "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-//     },
-//   ],
-//   outputPages: 1,
-//   outputConfig: [
-//     {
-//       title: "Output Page",
-//       description: "Output Description",
-//       outputVariables: [
-//         {
-//           name: "ZZZ",
-//           calculation: "2 * (AAA + 10) + BBB",
-//         },
-//         {
-//           name: "YYY",
-//           calculation: "3 * CCC + ZZZ",
-//         },
-//       ],
-//       imageUrl: "https://source.unsplash.com/user/erondu/1600x900",
-//     },
-//   ],
-//   contactPage: true,
-//   contactPageInputs: {
-//     name: true,
-//     surname: true,
-//     phone: true,
-//   },
-// };

@@ -4,6 +4,7 @@ import { useInputHandlers, useStepHandlers } from "../helpers/customHooks";
 import InputPage from "../components/formPages/InputPage";
 import ContactPage from "../components/formPages/ContactPage";
 import OutputPage from "../components/formPages/OutputPage";
+import { useState } from "react";
 
 const Home = () => {
   const inputConfig = useSelector((state) => state.config.inputConfig);
@@ -13,18 +14,32 @@ const Home = () => {
   );
 
   const [inputValues, handleInputChange] = useInputHandlers({});
-  const [contactInputs, handleContactInputChange] = useInputHandlers({});
+  const [contactInputs, setContactInputs] = useState({});
 
+  const handleContactInputChange = (name, value) => {
+    setContactInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
+  };
+  const allInputs = {
+    inputPage: { ...inputValues },
+    contactPage: { ...contactInputs },
+  };
+
+  // console.log(allInputs);
   const maxSteps =
     inputConfig.length + (contactPageInputs ? 1 : 0) + outputConfig.length;
   const [step, handleNextStep, handleBackStep] = useStepHandlers(1, maxSteps);
+
+  const handleInputs = (e) => {
+    // e.preventDefault();
+    console.log(allInputs);
+  };
 
   const currentPage =
     step <= inputConfig.length
       ? inputConfig[step - 1]
       : step === inputConfig.length + 1 && contactPageInputs
       ? { title: "Contact Page", type: "contact" }
-      : outputConfig[step - inputConfig.length - (contactPageInputs ? 2 : 1)]; 
+      : outputConfig[step - inputConfig.length - (contactPageInputs ? 2 : 1)];
   return (
     <div className="flex items-center min-h-[85vh] bg-gray-50 ">
       <div className="flex-1 2xl:max-w-7xl md:max-w-[90%] max-w-[95%] mx-auto bg-white rounded-2xl shadow-2xl">
@@ -82,7 +97,21 @@ const Home = () => {
                   >
                     Back
                   </button>
-                  <button className="btn-blue-two" onClick={handleNextStep}>
+                  <button
+                    className="btn-blue-two"
+                    onClick={() => {
+                      if (
+                        step ===
+                        inputConfig.length +
+                          (contactPageInputs ? 1 : 0) +
+                          outputConfig.length 
+                      ) {
+                        handleInputs();
+                      } else {
+                        handleNextStep();
+                      }
+                    }}
+                  >
                     {step ===
                     inputConfig.length +
                       (contactPageInputs ? 1 : 0) +

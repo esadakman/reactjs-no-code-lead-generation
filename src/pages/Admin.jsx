@@ -302,6 +302,7 @@ function Admin() {
             <input
               type="number"
               value={inputPages || ""}
+              min={0}
               onChange={(e) => setInputPages(parseInt(e.target.value))}
               className="px-2 py-1 border border-gray-300 rounded"
             />
@@ -323,6 +324,7 @@ function Admin() {
             <input
               type="number"
               value={outputPages || ""}
+              min={0}
               onChange={(e) => setOutputPages(parseInt(e.target.value))}
               className="px-2 py-1 border border-gray-300 rounded"
             />

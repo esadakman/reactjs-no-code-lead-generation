@@ -1,17 +1,10 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setContactPageData } from "../../features/configSlice";
-// import { setContactPageData } from "../features/configSlice";
+import { useSelector } from "react-redux";
 
-const ContactPage = ({ contactInputs }) => {
-  const dispatch = useDispatch();
+const ContactPage = ({ contactInputs, handleContactInputChange }) => {
   const contactPageInputs = useSelector(
     (state) => state.config.contactPageInputs
   );
-
-  const handleContactInputChange = (key, value) => {
-    dispatch(setContactPageData({ [key]: value }));
-  };
 
   return (
     <div>
