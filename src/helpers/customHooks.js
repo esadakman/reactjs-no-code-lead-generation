@@ -10,10 +10,11 @@ export const useInputHandlers = (initialValues) => {
 };
 
 // useStepHandlers.js
-export const useStepHandlers = (initialStep, maxSteps) => {
+export const useStepHandlers = (initialStep, maxSteps, allInputs) => {
   const [step, setStep] = useState(initialStep);
   const handleNextStep = () => {
     if (step < maxSteps) setStep(step + 1);
+    console.log(allInputs)
   };
   const handleBackStep = () => {
     if (step > 1) setStep(step - 1);

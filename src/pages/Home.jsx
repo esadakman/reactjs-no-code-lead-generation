@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useInputHandlers, useStepHandlers } from "../helpers/customHooks";
 import InputPage from "../components/formPages/InputPage";
 import ContactPage from "../components/formPages/ContactPage";
 import OutputPage from "../components/formPages/OutputPage";
-import { useState } from "react";
+import ProgressBar from "../components/formPages/ProgressBar";
 
 const Home = () => {
   const inputConfig = useSelector((state) => state.config.inputConfig);
@@ -24,13 +24,16 @@ const Home = () => {
     contactPage: { ...contactInputs },
   };
 
-  // console.log(allInputs);
   const maxSteps =
     inputConfig.length + (contactPageInputs ? 1 : 0) + outputConfig.length;
-  const [step, handleNextStep, handleBackStep] = useStepHandlers(1, maxSteps);
+  const [step, handleNextStep, handleBackStep] = useStepHandlers(
+    1,
+    maxSteps,
+    allInputs
+  );
 
-  const handleInputs = (e) => {
-    // e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
     console.log(allInputs);
   };
 
@@ -40,11 +43,29 @@ const Home = () => {
       : step === inputConfig.length + 1 && contactPageInputs
       ? { title: "Contact Page", type: "contact" }
       : outputConfig[step - inputConfig.length - (contactPageInputs ? 2 : 1)];
+
+  const inputConfigStepRange = Array.from(
+    { length: inputConfig.length },
+    (_, i) => i + 1
+  );
+  const contactPageStep = inputConfig.length + 1;
+  const outputConfigStepRange = Array.from(
+    { length: outputConfig.length },
+    (_, i) => i + inputConfig.length + (contactPageInputs ? 2 : 1)
+  );
+  const finalStep =
+    inputConfig.length + (contactPageInputs ? 1 : 0) + outputConfig.length;
+
   return (
     <div className="flex items-center min-h-[85vh] bg-gray-50 ">
       <div className="flex-1 2xl:max-w-7xl md:max-w-[90%] max-w-[95%] mx-auto bg-white rounded-2xl shadow-2xl">
         <div className="flex flex-col md:flex-row">
-          <div className="h-32 md:h-auto md:w-1/2 md:min-h-[80vh] min-h-0">
+          <div className="h-32 md:h-auto md:w-1/2 md:min-h-[80vh] min-h-0 flex flex-col ">
+            {finalStep > 1 && (
+              <div className="  w-full h-auto  bg-white rounded-tl-2xl">
+                <ProgressBar currentStep={step} totalSteps={finalStep} />
+              </div>
+            )}
             <img
               className="object-cover w-full h-full md:rounded-l-2xl md:rounded-r-none rounded-t-2xl"
               src={
@@ -54,16 +75,13 @@ const Home = () => {
               alt={currentPage.title}
             />
           </div>
-          <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2 md:min-h-[80vh] min-h-0 h-full">
-            <div className="w-full">
-              <div className="flex justify-center">
-                {/* <RegisterIcon /> */}
-              </div>
+          <div className="flex items-center justify-start  p-6 sm:p-12 md:w-1/2 md:min-h-[80vh] min-h-0 h-full">
+            <div className="w-full ">
               <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
                 {currentPage.title}
               </h1>
 
-              {step <= inputConfig.length && (
+              {inputConfigStepRange.includes(step) && (
                 <InputPage
                   config={currentPage}
                   inputValues={inputValues}
@@ -71,27 +89,27 @@ const Home = () => {
                 />
               )}
 
-              {currentPage.type === "contact" && (
+              {step === contactPageStep && contactPageInputs && (
                 <ContactPage
                   contactInputs={contactInputs}
                   handleContactInputChange={handleContactInputChange}
                 />
               )}
 
-              {step ===
-                inputConfig.length +
-                  (contactPageInputs ? 1 : 0) +
-                  outputConfig.length && (
-                <OutputPage config={currentPage} inputValues={inputValues} />
+              {outputConfigStepRange.includes(step) && (
+                <OutputPage
+                  config={currentPage}
+                  inputValues={inputValues}
+                  allInputs={allInputs}
+                />
               )}
 
-              {inputConfig.length +
-                (contactPageInputs ? 1 : 0) +
-                outputConfig.length >
-                1 && (
+              {finalStep > 1 && (
                 <div className="mt-4 flex">
                   <button
-                    className="btn-blue-two mr-2"
+                    className={`btn-blue-two mr-2${
+                      step === 1 ? " opacity-50" : ""
+                    }`}
                     onClick={handleBackStep}
                     disabled={step === 1}
                   >
@@ -99,25 +117,9 @@ const Home = () => {
                   </button>
                   <button
                     className="btn-blue-two"
-                    onClick={() => {
-                      if (
-                        step ===
-                        inputConfig.length +
-                          (contactPageInputs ? 1 : 0) +
-                          outputConfig.length 
-                      ) {
-                        handleInputs();
-                      } else {
-                        handleNextStep();
-                      }
-                    }}
+                    onClick={step === finalStep ? handleSubmit : handleNextStep}
                   >
-                    {step ===
-                    inputConfig.length +
-                      (contactPageInputs ? 1 : 0) +
-                      outputConfig.length
-                      ? "Submit"
-                      : "Next"}
+                    {step === finalStep ? "Submit" : "Next"}
                   </button>
                 </div>
               )}
