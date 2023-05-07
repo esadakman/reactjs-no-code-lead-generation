@@ -56,6 +56,7 @@ const Home = () => {
   const finalStep =
     inputConfig.length + (contactPageInputs ? 1 : 0) + outputConfig.length;
 
+  // console.log(finalStep);
   return (
     <div className="flex items-center min-h-[85vh] bg-gray-50 ">
       <div className="flex-1 2xl:max-w-7xl md:max-w-[90%] max-w-[95%] mx-auto bg-white rounded-2xl shadow-2xl">
@@ -67,7 +68,7 @@ const Home = () => {
               </div>
             )}
             <img
-              className="object-cover w-full h-full md:rounded-l-2xl md:rounded-r-none rounded-t-2xl"
+              className="object-cover w-full h-full md:rounded-l-2xl md:rounded-t-none rounded-t-2xl"
               src={
                 currentPage.imageUrl ||
                 "https://source.unsplash.com/user/erondu/1600x900"
@@ -78,7 +79,7 @@ const Home = () => {
           <div className="flex items-center justify-start  p-6 sm:p-12 md:w-1/2 md:min-h-[80vh] min-h-0 h-full">
             <div className="w-full ">
               <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
-                {currentPage.title}
+                {finalStep === 1 ? "Welcome" : currentPage.title}
               </h1>
 
               {inputConfigStepRange.includes(step) && (
@@ -107,9 +108,7 @@ const Home = () => {
               {finalStep > 1 && (
                 <div className="mt-4 flex">
                   <button
-                    className={`btn-blue-two mr-2${
-                      step === 1 ? " opacity-50" : ""
-                    }`}
+                    className="btn-blue-two mr-2 disabled:opacity-50 disabled:pointer-events-none "
                     onClick={handleBackStep}
                     disabled={step === 1}
                   >

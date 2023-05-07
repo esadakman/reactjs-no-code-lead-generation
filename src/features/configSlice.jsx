@@ -14,14 +14,7 @@ const initialState = {
     companyName: false,
     address: false,
   },
-  contactPageData: {
-    name: "",
-    surname: "",
-    phone: "",
-    email: "",
-    companyName: "",
-    address: "",
-  },
+  allInputs: {},
 };
 
 // const initialState = {
@@ -118,6 +111,12 @@ const configSlice = createSlice({
     setConfig: (state, action) => {
       Object.assign(state, action.payload);
     },
+    setAllInputs: (state, action) => {
+      state.allInputs = action.payload;
+    },
+    resetConfig: () => {
+      return initialState;
+    },
   },
 });
 
@@ -131,6 +130,8 @@ export const {
   setContactPageInputs,
   setContactPageData,
   setConfig,
+  setAllInputs,
+  resetConfig,
 } = configSlice.actions;
 
 export default configSlice.reducer;
